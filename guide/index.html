@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AGKit v2.0 — Antigravity Developer Kit</title>
+  <title>AGKit v3.0 — Antigravity Developer Kit</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
@@ -23,6 +23,7 @@
       --red:    #f87171; --red-dim:    rgba(248,113,113,0.10);
       --pink:   #f472b6; --pink-dim:   rgba(244,114,182,0.10);
       --yellow: #facc15; --yellow-dim: rgba(250,204,21,0.10);
+      --teal:   #2dd4bf; --teal-dim:   rgba(45,212,191,0.10);
 
       --text-1: #f0eeff;
       --text-2: #9492b4;
@@ -78,11 +79,19 @@
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
       margin-bottom: 20px; letter-spacing: 0.05em;
     }
-    .sub { font-size: 17px; color: var(--text-2); max-width: 500px; margin: 0 auto 48px; line-height: 1.7; }
+    .sub { font-size: 17px; color: var(--text-2); max-width: 580px; margin: 0 auto 48px; line-height: 1.7; }
 
     .stats { display: flex; justify-content: center; gap: 48px; flex-wrap: wrap; }
     .stat-n { font-size: 32px; font-weight: 900; background: linear-gradient(135deg, var(--purple), var(--cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     .stat-l { font-size: 11px; color: var(--text-3); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
+
+    /* ── New Badge ── */
+    .new-badge {
+      display: inline-block; font-size: 8px; font-weight: 800; letter-spacing: .08em;
+      background: linear-gradient(135deg, var(--green), var(--cyan));
+      color: #08080e; padding: 2px 6px; border-radius: 4px; margin-left: 6px;
+      vertical-align: middle; text-transform: uppercase;
+    }
 
     /* ── Section ── */
     .sec { margin-top: 72px; }
@@ -93,11 +102,11 @@
 
     /* ── Workflow ── */
     .wf { display: flex; align-items: stretch; gap: 0; background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 6px; overflow-x: auto; }
-    .wf-step { flex: 1; min-width: 110px; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 18px 10px; border-radius: 14px; cursor: default; transition: background .2s; }
+    .wf-step { flex: 1; min-width: 100px; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 18px 8px; border-radius: 14px; cursor: default; transition: background .2s; }
     .wf-step:hover { background: var(--bg-card-hover); }
     .wf-lbl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--text-3); }
-    .wf-cmd { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; font-weight: 600; padding: 4px 11px; border-radius: 6px; white-space: nowrap; }
-    .wf-desc { font-size: 11px; color: var(--text-3); text-align: center; line-height: 1.5; }
+    .wf-cmd { font-family: 'JetBrains Mono', monospace; font-size: 11.5px; font-weight: 600; padding: 4px 9px; border-radius: 6px; white-space: nowrap; }
+    .wf-desc { font-size: 10px; color: var(--text-3); text-align: center; line-height: 1.5; }
     .wf-arr { color: var(--text-3); font-size: 14px; align-self: center; padding: 0 2px; flex-shrink: 0; }
 
     .c-purple .wf-cmd { background: var(--purple-dim); color: var(--purple); }
@@ -108,6 +117,7 @@
     .c-red    .wf-cmd { background: var(--red-dim);    color: var(--red); }
     .c-pink   .wf-cmd { background: var(--pink-dim);   color: var(--pink); }
     .c-yellow .wf-cmd { background: var(--yellow-dim); color: var(--yellow); }
+    .c-teal   .wf-cmd { background: var(--teal-dim);   color: var(--teal); }
 
     /* ── Category label ── */
     .cat-label {
@@ -147,6 +157,8 @@
     .a-pink:hover     { box-shadow: 0 12px 40px rgba(244,114,182,.08); }
     .a-yellow::before { background: linear-gradient(90deg, var(--yellow), var(--orange)); }
     .a-yellow:hover   { box-shadow: 0 12px 40px rgba(250,204,21,.08); }
+    .a-teal::before   { background: linear-gradient(90deg, var(--teal), var(--green)); }
+    .a-teal:hover     { box-shadow: 0 12px 40px rgba(45,212,191,.08); }
 
     .c-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 12px; }
     .c-icon { font-size: 24px; line-height: 1; }
@@ -162,6 +174,7 @@
     .a-red    .c-tag { background: linear-gradient(90deg, var(--red), var(--orange)); }
     .a-pink   .c-tag { background: linear-gradient(90deg, var(--pink), var(--purple)); }
     .a-yellow .c-tag { background: linear-gradient(90deg, var(--yellow), var(--orange)); }
+    .a-teal   .c-tag { background: linear-gradient(90deg, var(--teal), var(--green)); }
 
     .c-name { font-family: 'JetBrains Mono', monospace; font-size: 18px; font-weight: 700; letter-spacing: -.02em; margin-bottom: 6px; }
     .c-desc { font-size: 13px; color: var(--text-2); line-height: 1.65; margin-bottom: 14px; }
@@ -226,13 +239,14 @@
   <div class="hero">
     <div class="badge"><span class="dot"></span>Antigravity Developer Kit</div>
     <h1>AGKit</h1>
-    <div class="ver">v2.0 — Full Edition</div>
-    <p class="sub">Memory persistence, verification loop, code review, security scan, debug, deploy, docs — đầy đủ cho solo developer.</p>
+    <div class="ver">v3.0 — Durable Layer Edition</div>
+    <p class="sub">Memory persistence, Risk Lanes, Test Matrix, Durable State Layer — bộ kit toàn diện cho AI Coding Agent. 23 skills tự động hóa mọi quy trình phát triển.</p>
     <div class="stats">
-      <div class="stat"><div class="stat-n">17</div><div class="stat-l">Skills</div></div>
+      <div class="stat"><div class="stat-n">23</div><div class="stat-l">Skills</div></div>
       <div class="stat"><div class="stat-n">8</div><div class="stat-l">Agents</div></div>
       <div class="stat"><div class="stat-n">8</div><div class="stat-l">Rules</div></div>
-      <div class="stat"><div class="stat-n">3+</div><div class="stat-l">Stacks</div></div>
+      <div class="stat"><div class="stat-n">3</div><div class="stat-l">Risk Lanes</div></div>
+      <div class="stat"><div class="stat-n">2</div><div class="stat-l">Databases</div></div>
     </div>
   </div>
 
@@ -240,25 +254,27 @@
   <div class="sec">
     <div class="sec-hd">
       <div class="sec-ico" style="background:rgba(167,139,250,.1)">⚡</div>
-      <div class="sec-title">Workflow Hàng Ngày</div>
+      <div class="sec-title">Workflow Hàng Ngày v3.0</div>
       <div class="sec-line"></div>
     </div>
     <div class="wf">
-      <div class="wf-step c-purple"><div class="wf-lbl">Sáng</div><div class="wf-cmd">agkit session</div><div class="wf-desc">Nạp context</div></div>
+      <div class="wf-step c-purple"><div class="wf-lbl">Sáng</div><div class="wf-cmd">session</div><div class="wf-desc">Nạp context<br>+ ghi DB</div></div>
       <div class="wf-arr">›</div>
-      <div class="wf-step c-blue"><div class="wf-lbl">Lên kế hoạch</div><div class="wf-cmd">agkit plan</div><div class="wf-desc">Breakdown task</div></div>
+      <div class="wf-step c-teal"><div class="wf-lbl">Phân loại</div><div class="wf-cmd">intake</div><div class="wf-desc">Risk Lane<br>🟢🟡🔴</div></div>
       <div class="wf-arr">›</div>
-      <div class="wf-step c-cyan"><div class="wf-lbl">Sau code</div><div class="wf-cmd">agkit verify</div><div class="wf-desc">Chạy tests</div></div>
+      <div class="wf-step c-blue"><div class="wf-lbl">Kế hoạch</div><div class="wf-cmd">plan</div><div class="wf-desc">Breakdown<br>+ Risk</div></div>
       <div class="wf-arr">›</div>
-      <div class="wf-step c-green"><div class="wf-lbl">Check</div><div class="wf-cmd">agkit review</div><div class="wf-desc">Code quality</div></div>
+      <div class="wf-step c-cyan"><div class="wf-lbl">Kiểm tra</div><div class="wf-cmd">verify</div><div class="wf-desc">Tests<br>+ Matrix</div></div>
       <div class="wf-arr">›</div>
-      <div class="wf-step c-yellow"><div class="wf-lbl">Commit</div><div class="wf-cmd">agkit git</div><div class="wf-desc">Conventional<br>commit</div></div>
+      <div class="wf-step c-green"><div class="wf-lbl">Review</div><div class="wf-cmd">review</div><div class="wf-desc">Code<br>quality</div></div>
       <div class="wf-arr">›</div>
-      <div class="wf-step c-red"><div class="wf-lbl">Security</div><div class="wf-cmd">agkit security</div><div class="wf-desc">OWASP scan</div></div>
+      <div class="wf-step c-yellow"><div class="wf-lbl">Commit</div><div class="wf-cmd">git</div><div class="wf-desc">Conventional<br>commit</div></div>
       <div class="wf-arr">›</div>
-      <div class="wf-step c-orange"><div class="wf-lbl">Deploy</div><div class="wf-cmd">agkit deploy</div><div class="wf-desc">Pre-deploy<br>checklist</div></div>
+      <div class="wf-step c-red"><div class="wf-lbl">Security</div><div class="wf-cmd">security</div><div class="wf-desc">OWASP<br>scan</div></div>
       <div class="wf-arr">›</div>
-      <div class="wf-step c-pink"><div class="wf-lbl">Xong</div><div class="wf-cmd">agkit done</div><div class="wf-desc">Cập nhật<br>memory</div></div>
+      <div class="wf-step c-orange"><div class="wf-lbl">Deploy</div><div class="wf-cmd">deploy</div><div class="wf-desc">Pre-deploy<br>checklist</div></div>
+      <div class="wf-arr">›</div>
+      <div class="wf-step c-pink"><div class="wf-lbl">Xong</div><div class="wf-cmd">done</div><div class="wf-desc">Trace<br>+ stats</div></div>
     </div>
   </div>
 
@@ -266,7 +282,7 @@
   <div class="sec">
     <div class="sec-hd">
       <div class="sec-ico" style="background:rgba(96,165,250,.1)">🧰</div>
-      <div class="sec-title">Tất Cả 16 Commands</div>
+      <div class="sec-title">Tất Cả 23 Commands</div>
       <div class="sec-line"></div>
     </div>
 
@@ -282,7 +298,7 @@
       <div class="card a-blue" onclick="cp('agkit session',this)">
         <div class="c-top"><span class="c-icon">🔄</span><span class="c-tag">Session</span></div>
         <div class="c-name">agkit session</div>
-        <div class="c-desc">Nạp context đầu phiên. Đọc PROJECT.md + STATUS.md, load rules theo stack, báo cáo ready.</div>
+        <div class="c-desc">Nạp context đầu phiên. Đọc PROJECT.md + STATUS.md, load rules theo stack, <strong>ghi session vào DB</strong>.</div>
         <div class="c-tags"><span class="tag">agkit session</span><span class="tag">nạp context</span><span class="tag">bắt đầu phiên</span></div>
         <div class="copy-tip">⎘ Click để copy</div>
       </div>
@@ -296,19 +312,33 @@
       <div class="card a-green" onclick="cp('agkit upgrade',this)">
         <div class="c-top"><span class="c-icon">⬆️</span><span class="c-tag">Upgrade</span></div>
         <div class="c-name">agkit upgrade</div>
-        <div class="c-desc">Nâng cấp project từ v1.0 → v2.0. Detect stack, copy agents/rules còn thiếu, cập nhật PROJECT.md.</div>
-        <div class="c-tags"><span class="tag">agkit upgrade</span><span class="tag">nâng cấp</span><span class="tag">lên v2</span></div>
+        <div class="c-desc">Nâng cấp project lên v3.0. Cài Durable Layer, copy skills mới, cập nhật cấu hình.</div>
+        <div class="c-tags"><span class="tag">agkit upgrade</span><span class="tag">nâng cấp</span><span class="tag">lên v3</span></div>
         <div class="copy-tip">⎘ Click để copy</div>
       </div>
     </div>
 
-    <div class="cat-label">📋 Planning & Workflow</div>
+    <div class="cat-label">🚦 Planning & Risk<span class="new-badge">v3.0</span></div>
     <div class="grid">
       <div class="card a-blue" onclick="cp('agkit plan',this)">
         <div class="c-top"><span class="c-icon">🗺️</span><span class="c-tag">Planning</span></div>
-        <div class="c-name">agkit plan</div>
-        <div class="c-desc">Breakdown feature lớn thành subtasks có priority, estimates, phases. Risk assessment tự động. Cập nhật STATUS.md.</div>
-        <div class="c-tags"><span class="tag">agkit plan</span><span class="tag">agkit plan [feature]</span><span class="tag">lên kế hoạch</span></div>
+        <div class="c-name">agkit plan<span class="new-badge">upgraded</span></div>
+        <div class="c-desc">Breakdown feature thành subtasks. <strong>Intake Classification</strong> tự động phân loại rủi ro: 🟢 Tiny / 🟡 Normal / 🔴 High-risk.</div>
+        <div class="c-tags"><span class="tag">agkit plan</span><span class="tag">risk lanes</span><span class="tag">lên kế hoạch</span></div>
+        <div class="copy-tip">⎘ Click để copy</div>
+      </div>
+      <div class="card a-teal" onclick="cp('agkit intake',this)">
+        <div class="c-top"><span class="c-icon">🚦</span><span class="c-tag">Risk</span></div>
+        <div class="c-name">agkit intake<span class="new-badge">new</span></div>
+        <div class="c-desc">Phân loại rủi ro công việc độc lập. Auto-classify: 🟢 Tiny / 🟡 Normal / 🔴 High-risk. Ghi vào DB.</div>
+        <div class="c-tags"><span class="tag">agkit intake</span><span class="tag">phân loại rủi ro</span><span class="tag">risk lane</span></div>
+        <div class="copy-tip">⎘ Click để copy</div>
+      </div>
+      <div class="card a-orange" onclick="cp('agkit adr',this)">
+        <div class="c-top"><span class="c-icon">🏗️</span><span class="c-tag">Architect</span></div>
+        <div class="c-name">agkit adr</div>
+        <div class="c-desc">Architect subagent phân tích vấn đề kiến trúc. 2-3 phương án với trade-offs. Tự ghi ADR vào DB + PROJECT.md.</div>
+        <div class="c-tags"><span class="tag">agkit adr</span><span class="tag">agkit adr [vấn đề]</span><span class="tag">ghi quyết định</span></div>
         <div class="copy-tip">⎘ Click để copy</div>
       </div>
       <div class="card a-pink" onclick="cp('agkit done',this)">
@@ -318,22 +348,22 @@
         <div class="c-tags"><span class="tag">agkit done</span><span class="tag">xong rồi</span><span class="tag">task done</span></div>
         <div class="copy-tip">⎘ Click để copy</div>
       </div>
-      <div class="card a-yellow" onclick="cp('agkit git',this)">
-        <div class="c-top"><span class="c-icon">🌿</span><span class="c-tag">Git</span></div>
-        <div class="c-name">agkit git</div>
-        <div class="c-desc">Tạo Conventional Commit message từ staged changes. PR description, branch naming, git cleanup.</div>
-        <div class="c-tags"><span class="tag">agkit git</span><span class="tag">agkit git pr</span><span class="tag">commit này</span></div>
-        <div class="copy-tip">⎘ Click để copy</div>
-      </div>
     </div>
 
-    <div class="cat-label">🔬 Code Quality</div>
+    <div class="cat-label">🔬 Code Quality & Test Matrix<span class="new-badge">v3.0</span></div>
     <div class="grid">
       <div class="card a-green" onclick="cp('agkit verify',this)">
         <div class="c-top"><span class="c-icon">✅</span><span class="c-tag">Testing</span></div>
-        <div class="c-name">agkit verify</div>
-        <div class="c-desc">Chạy full test suite theo stack. Auto-fix nếu fail, tối đa 3 vòng. Escalate với mô tả chi tiết.</div>
-        <div class="c-tags"><span class="tag">agkit verify</span><span class="tag">chạy test</span><span class="tag">kiểm tra</span></div>
+        <div class="c-name">agkit verify<span class="new-badge">upgraded</span></div>
+        <div class="c-desc">Chạy test suite + auto-fix. <strong>Test Matrix Report</strong> đối chiếu behavior vs proof. Ghi trace vào DB.</div>
+        <div class="c-tags"><span class="tag">agkit verify</span><span class="tag">test matrix</span><span class="tag">chạy test</span></div>
+        <div class="copy-tip">⎘ Click để copy</div>
+      </div>
+      <div class="card a-cyan" onclick="cp('agkit matrix',this)">
+        <div class="c-top"><span class="c-icon">🧪</span><span class="c-tag">Matrix</span></div>
+        <div class="c-name">agkit matrix<span class="new-badge">new</span></div>
+        <div class="c-desc">Xem/quản lý Test Matrix — Behavior-to-Proof mapping. Coverage score tự động. Unit, Integration, E2E, Platform.</div>
+        <div class="c-tags"><span class="tag">agkit matrix</span><span class="tag">agkit matrix [story]</span><span class="tag">test coverage</span></div>
         <div class="copy-tip">⎘ Click để copy</div>
       </div>
       <div class="card a-purple" onclick="cp('agkit review',this)">
@@ -350,7 +380,7 @@
         <div class="c-tags"><span class="tag">agkit debug</span><span class="tag">agkit debug [error]</span><span class="tag">bug này</span></div>
         <div class="copy-tip">⎘ Click để copy</div>
       </div>
-      <div class="card a-cyan" onclick="cp('agkit refactor',this)">
+      <div class="card a-blue" onclick="cp('agkit refactor',this)">
         <div class="c-top"><span class="c-icon">♻️</span><span class="c-tag">Refactor</span></div>
         <div class="c-name">agkit refactor</div>
         <div class="c-desc">Safe refactoring với test coverage bảo vệ. Step-by-step plan, verify sau mỗi bước, không big bang.</div>
@@ -359,13 +389,13 @@
       </div>
     </div>
 
-    <div class="cat-label">🔒 Security & Performance</div>
+    <div class="cat-label">🔒 Security, Performance & Docs</div>
     <div class="grid">
       <div class="card a-red" onclick="cp('agkit security',this)">
         <div class="c-top"><span class="c-icon">🔒</span><span class="c-tag">Security</span></div>
         <div class="c-name">agkit security</div>
         <div class="c-desc">OWASP Top 10 + hardcoded secrets. CRITICAL / HIGH / MEDIUM với code fix. Verdict PASS / FAIL.</div>
-        <div class="c-tags"><span class="tag">agkit security</span><span class="tag">agkit security [folder]</span><span class="tag">scan bảo mật</span></div>
+        <div class="c-tags"><span class="tag">agkit security</span><span class="tag">scan bảo mật</span></div>
         <div class="copy-tip">⎘ Click để copy</div>
       </div>
       <div class="card a-yellow" onclick="cp('agkit perf',this)">
@@ -375,10 +405,6 @@
         <div class="c-tags"><span class="tag">agkit perf</span><span class="tag">agkit perf frontend</span><span class="tag">app chậm</span></div>
         <div class="copy-tip">⎘ Click để copy</div>
       </div>
-    </div>
-
-    <div class="cat-label">📚 Documentation & Deploy</div>
-    <div class="grid">
       <div class="card a-blue" onclick="cp('agkit docs',this)">
         <div class="c-top"><span class="c-icon">📝</span><span class="c-tag">Docs</span></div>
         <div class="c-name">agkit docs</div>
@@ -390,24 +416,52 @@
         <div class="c-top"><span class="c-icon">🚀</span><span class="c-tag">Deploy</span></div>
         <div class="c-name">agkit deploy</div>
         <div class="c-desc">Pre-deploy checklist: build, types, tests, security, migrations, Docker, env vars. READY / BLOCKED verdict.</div>
-        <div class="c-tags"><span class="tag">agkit deploy</span><span class="tag">sắp deploy</span><span class="tag">deploy check</span></div>
+        <div class="c-tags"><span class="tag">agkit deploy</span><span class="tag">sắp deploy</span></div>
+        <div class="copy-tip">⎘ Click để copy</div>
+      </div>
+      <div class="card a-yellow" onclick="cp('agkit git',this)">
+        <div class="c-top"><span class="c-icon">🌿</span><span class="c-tag">Git</span></div>
+        <div class="c-name">agkit git</div>
+        <div class="c-desc">Tạo Conventional Commit message từ staged changes. PR description, branch naming, git cleanup.</div>
+        <div class="c-tags"><span class="tag">agkit git</span><span class="tag">agkit git pr</span><span class="tag">commit này</span></div>
         <div class="copy-tip">⎘ Click để copy</div>
       </div>
     </div>
 
-    <div class="cat-label">🏗️ Architecture & ADR</div>
+    <div class="cat-label">🗄 Durable Layer<span class="new-badge">v3.0 new</span></div>
     <div class="grid">
-      <div class="card a-orange" onclick="cp('agkit adr',this)">
-        <div class="c-top"><span class="c-icon">🏗️</span><span class="c-tag">Architect</span></div>
-        <div class="c-name">agkit adr</div>
-        <div class="c-desc">Architect subagent phân tích vấn đề kiến trúc. 2-3 phương án với trade-offs. Tự ghi ADR vào PROJECT.md.</div>
-        <div class="c-tags"><span class="tag">agkit adr</span><span class="tag">agkit adr [vấn đề]</span><span class="tag">ghi quyết định</span></div>
+      <div class="card a-teal" onclick="cp('agkit history',this)">
+        <div class="c-top"><span class="c-icon">📜</span><span class="c-tag">History</span></div>
+        <div class="c-name">agkit history<span class="new-badge">new</span></div>
+        <div class="c-desc">Xem lịch sử hoạt động từ SQLite DB. Timeline sessions, traces, intakes, ADRs. Lọc theo loại hoặc kết quả.</div>
+        <div class="c-tags"><span class="tag">agkit history</span><span class="tag">xem lịch sử</span><span class="tag">history traces</span></div>
+        <div class="copy-tip">⎘ Click để copy</div>
+      </div>
+      <div class="card a-green" onclick="cp('agkit trace',this)">
+        <div class="c-top"><span class="c-icon">📝</span><span class="c-tag">Trace</span></div>
+        <div class="c-name">agkit trace<span class="new-badge">new</span></div>
+        <div class="c-desc">Ghi nhận hành động quan trọng vào DB. Summary + outcome (success/failure/partial). Tự liên kết session.</div>
+        <div class="c-tags"><span class="tag">agkit trace</span><span class="tag">ghi trace</span><span class="tag">log action</span></div>
+        <div class="copy-tip">⎘ Click để copy</div>
+      </div>
+      <div class="card a-purple" onclick="cp('agkit stats',this)">
+        <div class="c-top"><span class="c-icon">📊</span><span class="c-tag">Stats</span></div>
+        <div class="c-name">agkit stats<span class="new-badge">new</span></div>
+        <div class="c-desc">Dashboard sức khỏe dự án: sessions, ADRs, traces, stories, test coverage score. JSON output available.</div>
+        <div class="c-tags"><span class="tag">agkit stats</span><span class="tag">thống kê</span><span class="tag">agkit stats --json</span></div>
+        <div class="copy-tip">⎘ Click để copy</div>
+      </div>
+      <div class="card a-orange" onclick="cp('agkit backlog',this)">
+        <div class="c-top"><span class="c-icon">📋</span><span class="c-tag">Backlog</span></div>
+        <div class="c-name">agkit backlog<span class="new-badge">new</span></div>
+        <div class="c-desc">Quản lý danh sách việc cần làm. Priority sorting, category filtering. Product / tech_debt / harness.</div>
+        <div class="c-tags"><span class="tag">agkit backlog</span><span class="tag">danh sách việc</span><span class="tag">backlog add</span></div>
         <div class="copy-tip">⎘ Click để copy</div>
       </div>
       <div class="card a-pink" onclick="cp('agkit help',this)">
         <div class="c-top"><span class="c-icon">❓</span><span class="c-tag">Help</span></div>
         <div class="c-name">agkit help</div>
-        <div class="c-desc">Hiển thị danh sách đầy đủ tất cả 16 commands với workflow. Gọi khi không nhớ lệnh nào.</div>
+        <div class="c-desc">Hiển thị danh sách đầy đủ 23 commands với workflow v3.0. Gọi khi không nhớ lệnh nào.</div>
         <div class="c-tags"><span class="tag">agkit help</span><span class="tag">agkit</span><span class="tag">lệnh agkit</span></div>
         <div class="copy-tip">⎘ Click để copy</div>
       </div>
@@ -418,7 +472,7 @@
   <div class="sec">
     <div class="sec-hd">
       <div class="sec-ico" style="background:rgba(34,211,238,.1)">📁</div>
-      <div class="sec-title">Cấu Trúc Files</div>
+      <div class="sec-title">Cấu Trúc Files v3.0</div>
       <div class="sec-line"></div>
     </div>
     <div class="files">
@@ -426,6 +480,8 @@
       <div class="f-item"><div class="f-ico" style="background:rgba(96,165,250,.1)">🧠</div><div><div class="f-path">.agkit/PROJECT.md</div><div class="f-desc">Bộ nhớ bền vững: stack, ADR, patterns</div></div></div>
       <div class="f-item"><div class="f-ico" style="background:rgba(34,211,238,.1)">📌</div><div><div class="f-path">.agkit/STATUS.md</div><div class="f-desc">Current sprint, blocked, next up</div></div></div>
       <div class="f-item"><div class="f-ico" style="background:rgba(74,222,128,.1)">🔄</div><div><div class="f-path">.agkit/VERIFY.md</div><div class="f-desc">Verification loop protocol</div></div></div>
+      <div class="f-item"><div class="f-ico" style="background:rgba(45,212,191,.1)">🗄️</div><div><div class="f-path">.agkit/agkit.db<span class="new-badge">new</span></div><div class="f-desc">SQLite DB — Durable Layer</div></div></div>
+      <div class="f-item"><div class="f-ico" style="background:rgba(45,212,191,.1)">⚙️</div><div><div class="f-path">.agkit/bin/agkit-cli<span class="new-badge">new</span></div><div class="f-desc">Rust CLI binary (1.7MB)</div></div></div>
       <div class="f-item"><div class="f-ico" style="background:rgba(251,146,60,.1)">📐</div><div><div class="f-path">rules/common.md</div><div class="f-desc">SOLID, naming, commits, error handling</div></div></div>
       <div class="f-item"><div class="f-ico" style="background:rgba(96,165,250,.1)">⚛️</div><div><div class="f-path">rules/nextjs.md</div><div class="f-desc">App Router, Server/Client, data fetch</div></div></div>
       <div class="f-item"><div class="f-ico" style="background:rgba(34,211,238,.1)">🐹</div><div><div class="f-path">rules/golang.md</div><div class="f-desc">Error wrapping, interfaces, concurrency</div></div></div>
@@ -434,14 +490,7 @@
       <div class="f-item"><div class="f-ico" style="background:rgba(167,139,250,.1)">🎨</div><div><div class="f-path">rules/tailwind.md</div><div class="f-desc">cn(), cva, design tokens, dark mode</div></div></div>
       <div class="f-item"><div class="f-ico" style="background:rgba(248,113,113,.1)">🐳</div><div><div class="f-path">rules/docker.md</div><div class="f-desc">Multi-stage, health checks, compose</div></div></div>
       <div class="f-item"><div class="f-ico" style="background:rgba(244,114,182,.1)">🧪</div><div><div class="f-path">rules/testing.md</div><div class="f-desc">Pyramid, unit/integration/E2E, factories</div></div></div>
-      <div class="f-item"><div class="f-ico" style="background:rgba(167,139,250,.1)">🤖</div><div><div class="f-path">agents/architect</div><div class="f-desc">ADR decisions + trade-off analysis</div></div></div>
-      <div class="f-item"><div class="f-ico" style="background:rgba(96,165,250,.1)">🔍</div><div><div class="f-path">agents/code-reviewer</div><div class="f-desc">BLOCKER/WARNING/SUGGESTION checklist</div></div></div>
-      <div class="f-item"><div class="f-ico" style="background:rgba(34,211,238,.1)">🔧</div><div><div class="f-path">agents/build-resolver</div><div class="f-desc">Root cause analysis, fixes theo stack</div></div></div>
-      <div class="f-item"><div class="f-ico" style="background:rgba(248,113,113,.1)">🔒</div><div><div class="f-path">agents/security-scanner</div><div class="f-desc">OWASP Top 10 + hardcoded secrets</div></div></div>
-      <div class="f-item"><div class="f-ico" style="background:rgba(74,222,128,.1)">🗄️</div><div><div class="f-path">agents/database-reviewer</div><div class="f-desc">RLS, N+1, indexes, schema design</div></div></div>
-      <div class="f-item"><div class="f-ico" style="background:rgba(244,114,182,.1)">⚛️</div><div><div class="f-path">agents/frontend-reviewer</div><div class="f-desc">Core Web Vitals, a11y, re-renders</div></div></div>
-      <div class="f-item"><div class="f-ico" style="background:rgba(251,146,60,.1)">🚢</div><div><div class="f-path">agents/devops-checker</div><div class="f-desc">Docker, CI/CD, production hardening</div></div></div>
-      <div class="f-item"><div class="f-ico" style="background:rgba(250,204,21,.1)">♻️</div><div><div class="f-path">agents/refactor-guide</div><div class="f-desc">Safe incremental refactoring plan</div></div></div>
+      <div class="f-item"><div class="f-ico" style="background:rgba(167,139,250,.1)">🤖</div><div><div class="f-path">agents/ (8 agents)</div><div class="f-desc">architect, code-reviewer, security, ...</div></div></div>
     </div>
   </div>
 
@@ -449,24 +498,24 @@
   <div class="sec">
     <div class="sec-hd">
       <div class="sec-ico" style="background:rgba(251,146,60,.1)">💡</div>
-      <div class="sec-title">Mẹo Sử Dụng</div>
+      <div class="sec-title">Mẹo Sử Dụng v3.0</div>
       <div class="sec-line"></div>
     </div>
     <div class="tips">
       <div class="tip"><div class="tip-n">1</div><div class="tip-t"><strong>Click vào card</strong> để copy command. Paste thẳng vào Antigravity để chạy ngay.</div></div>
-      <div class="tip"><div class="tip-n">2</div><div class="tip-t"><strong>Ngôn ngữ tự nhiên</strong> cũng hoạt động. "review code này", "app chậm quá", "sắp deploy" — Antigravity hiểu hết.</div></div>
-      <div class="tip"><div class="tip-n">3</div><div class="tip-t"><strong>Project mới:</strong> gọi <code>agkit init</code> đầu tiên. Kit tự detect stack và hỏi 3 câu để setup.</div></div>
-      <div class="tip"><div class="tip-n">4</div><div class="tip-t"><strong>Mỗi buổi sáng:</strong> <code>agkit session</code> để Antigravity nạp context mà không cần giải thích lại.</div></div>
-      <div class="tip"><div class="tip-n">5</div><div class="tip-t"><strong>Trước commit:</strong> <code>agkit git</code> → <code>agkit security</code>. Chỉ 2 lệnh đảm bảo commit sạch và an toàn.</div></div>
-      <div class="tip"><div class="tip-n">6</div><div class="tip-t"><strong>Trước deploy:</strong> <code>agkit deploy</code> chạy toàn bộ checklist. Chỉ deploy khi không có BLOCKER.</div></div>
+      <div class="tip"><div class="tip-n">2</div><div class="tip-t"><strong>Nhận task mới?</strong> Gọi <code>agkit intake</code> trước để phân loại rủi ro. Lane sẽ quyết định quy trình.</div></div>
+      <div class="tip"><div class="tip-n">3</div><div class="tip-t"><strong>Sau khi code:</strong> <code>agkit verify</code> → xem Test Matrix → <code>agkit review</code>. Coverage score phải ≥ 80%.</div></div>
+      <div class="tip"><div class="tip-n">4</div><div class="tip-t"><strong>Xem tổng quan:</strong> <code>agkit stats</code> cho dashboard sức khỏe. <code>agkit history</code> cho timeline hoạt động.</div></div>
+      <div class="tip"><div class="tip-n">5</div><div class="tip-t"><strong>Quản lý việc:</strong> <code>agkit backlog add "title" high</code> để thêm. <code>agkit backlog</code> để xem danh sách.</div></div>
+      <div class="tip"><div class="tip-n">6</div><div class="tip-t"><strong>Ghi nhận:</strong> <code>agkit trace "Fixed N+1 query" success</code> — mọi hành động quan trọng đều được lưu trữ.</div></div>
       <div class="tip"><div class="tip-n">7</div><div class="tip-t"><strong>Bug khó:</strong> <code>agkit debug</code> áp dụng scientific debugging — reproduce trước, sau mới fix.</div></div>
-      <div class="tip"><div class="tip-n">8</div><div class="tip-t"><strong>Refactor an toàn:</strong> <code>agkit refactor</code> không bao giờ bắt đầu nếu coverage < 60%.</div></div>
+      <div class="tip"><div class="tip-n">8</div><div class="tip-t"><strong>Trước deploy:</strong> <code>agkit deploy</code> chạy toàn bộ checklist. Chỉ deploy khi không có BLOCKER.</div></div>
     </div>
   </div>
 
   <div class="footer">
-    <div class="f-logo">AG<span>Kit</span> v2.0 Full Edition</div>
-    <div class="f-tag">17 skills · 8 agents · 8 rules · Powered by Antigravity</div>
+    <div class="f-logo">AG<span>Kit</span> v3.0 Durable Layer Edition</div>
+    <div class="f-tag">23 skills · 8 agents · 8 rules · 3 risk lanes · Powered by Antigravity</div>
   </div>
 </div>
 

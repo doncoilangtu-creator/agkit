@@ -1,10 +1,11 @@
-# agkit-upgrade — Nâng cấp AGKit lên phiên bản mới nhất
-# Trigger: "agkit upgrade", "nâng cấp agkit", "lên v2", "update kit"
+# agkit-upgrade — Nâng cấp AGKit lên phiên bản mới nhất (v3.0)
+# Trigger: "agkit upgrade", "nâng cấp agkit", "lên v3", "update kit"
 
 ## Mô tả
 
-Kiểm tra phiên bản AGKit hiện tại của project và tự động copy các files mới
-từ một project đã có v2.0 (hoặc từ template), cập nhật PROJECT.md với version mới.
+Kiểm tra phiên bản AGKit hiện tại của project và tự động nâng cấp lên v3.0.
+Bao gồm: copy agents/rules mới, cài đặt Durable Layer (Rust CLI + SQLite),
+và cập nhật PROJECT.md.
 
 ---
 
@@ -13,97 +14,150 @@ từ một project đã có v2.0 (hoặc từ template), cập nhật PROJECT.md
 ### Bước 1 — Detect phiên bản hiện tại
 
 Đọc `.agkit/PROJECT.md` và tìm dòng `AGKit Version`:
-- Tìm thấy `v2.0` → Báo: "✅ Project này đã là AGKit v2.0. Không cần upgrade."
-- Tìm thấy `v1.0` hoặc không có dòng version → Tiếp tục upgrade
+- Tìm thấy `v3.0` → Báo: "✅ Project này đã là AGKit v3.0. Không cần upgrade."
+- Tìm thấy `v2.0` → Tiếp tục upgrade v2→v3
+- Tìm thấy `v1.0` hoặc không có dòng version → Cần upgrade v1→v3 (bao gồm tất cả)
 - Không tìm thấy `.agkit/` → Báo: "Chưa có AGKit. Gọi `agkit init` để setup từ đầu."
 
-### Bước 2 — Kiểm tra những gì còn thiếu
+### Bước 2 — Kiểm tra những gì cần bổ sung
 
-So sánh files trong `.agkit/` của project với v2.0 spec:
+**Nếu từ v2.0 → v3.0:**
 
-**Agents cần có (v2.0):**
-- architect.md ✓ (v1)
-- code-reviewer.md ✓ (v1)
-- build-resolver.md ✓ (v1)
-- security-scanner.md ✓ (v1)
-- database-reviewer.md ← MỚI v2.0
-- frontend-reviewer.md ← MỚI v2.0
-- devops-checker.md ← MỚI v2.0
-- refactor-guide.md ← MỚI v2.0
+Kiểm tra các thành phần v3.0:
 
-**Rules cần có (v2.0):**
-- common.md ✓ (v1)
-- nextjs.md ✓ (v1) — nếu dùng Next.js
-- golang.md ✓ (v1) — nếu dùng Go
-- python.md ✓ (v1) — nếu dùng Python
-- testing.md ← MỚI v2.0 (mọi project)
-- supabase.md ← MỚI v2.0 (nếu dùng Supabase)
-- tailwind.md ← MỚI v2.0 (nếu dùng Tailwind)
-- docker.md ← MỚI v2.0 (nếu có Dockerfile)
+| Thành phần | Kiểm tra |
+|---|---|
+| Durable Layer CLI | `.agkit/bin/agkit-cli.exe` tồn tại? |
+| Local Database | `.agkit/agkit.db` tồn tại? |
+| Global Database | `~/.gemini/agkit-global.db` tồn tại? |
+| 6 Skills mới | Kiểm tra trong plugins/agkit-plugin/skills/ |
+| 3 Skills nâng cấp | Kiểm tra version header (v3.0) |
 
-Liệt kê những gì đang thiếu.
+**Nếu từ v1.0 → v3.0:**
+
+Bao gồm tất cả upgrade v2.0 (agents, rules) + v3.0 (Durable Layer).
 
 ### Bước 3 — Xác nhận với user
 
 ```
-📋 AGKit Upgrade: v1.0 → v2.0
+📋 AGKit Upgrade: v2.0 → v3.0
 
 Project: [tên project]
-Hiện có: [N agents, N rules]
+Hiện có: [N agents, N rules, N skills]
 
-Sẽ thêm vào:
-  Agents: database-reviewer, frontend-reviewer, devops-checker, refactor-guide
-  Rules:  testing [+ supabase, tailwind, docker nếu phát hiện stack]
-
-Skills (commands) đã tự động update — không cần làm gì.
+Sẽ thêm/cập nhật:
+  🆕 Durable Layer:
+     • agkit-cli.exe (Rust CLI binary)
+     • .agkit/agkit.db (SQLite database)
+     • ~/.gemini/agkit-global.db
+  
+  🆕 6 Skills mới:
+     • /history, /matrix, /intake, /trace, /stats, /backlog
+  
+  ⬆️ 3 Skills nâng cấp:
+     • /plan (+ Intake Classification)
+     • /verify (+ Test Matrix Report)
+     • /session (+ DB recording)
 
 Tiếp tục? (yes/no)
 ```
 
-### Bước 4 — Copy files còn thiếu
+### Bước 4 — Cài đặt Durable Layer
 
-Với mỗi file còn thiếu, tạo file đó trong `.agkit/` của project hiện tại
-bằng cách copy nội dung từ project nguồn (`D:\anti\.agkit\`).
+**4.1 — Kiểm tra Rust toolchain:**
+```bash
+rustc --version
+```
+- Nếu chưa có → Hướng dẫn cài: `winget install Rustlang.Rustup`
+- Nếu đã có → Tiếp tục
 
-Nếu không tìm thấy project nguồn, tạo files từ template built-in.
+**4.2 — Build CLI binary:**
+```bash
+cd agkit-cli
+cargo build --release
+mkdir -p ../.agkit/bin
+cp target/release/agkit-cli.exe ../.agkit/bin/
+```
 
-**Thứ tự copy:**
-1. Agents (4 files mới)
-2. Rules theo stack:
-   - `testing.md` → luôn copy
-   - `supabase.md` → nếu tìm thấy `@supabase/supabase-js` trong package.json
-   - `tailwind.md` → nếu tìm thấy `tailwind.config`
-   - `docker.md` → nếu tìm thấy `Dockerfile`
+**4.3 — Khởi tạo databases:**
+```bash
+.agkit/bin/agkit-cli init
+```
 
-### Bước 5 — Cập nhật PROJECT.md
+### Bước 5 — Copy Skills mới
 
-Thêm hoặc cập nhật dòng version trong PROJECT.md:
+Copy 6 skill files mới vào `plugins/agkit-plugin/skills/`:
+- agkit-history.md
+- agkit-matrix.md
+- agkit-intake.md
+- agkit-trace.md
+- agkit-stats.md
+- agkit-backlog.md
+
+Cập nhật 3 skill files:
+- agkit-plan.md (thêm Bước 0 — Intake Classification)
+- agkit-verify.md (thêm Bước 6 — Test Matrix + Bước 7 — Trace)
+- agkit-session.md (thêm Bước 1.5 — DB recording)
+
+### Bước 6 — Cập nhật cấu hình
+
+1. Cập nhật `plugin.json` → version 3.0.0
+2. Cập nhật `.gitignore` → thêm `agkit.db`, `.agkit/bin/`, `agkit-cli/target/`
+3. Cập nhật `agkit-help.md` → 23 skills
+4. Copy plugin vào `~/.gemini/config/plugins/agkit-plugin/`
+
+### Bước 7 — Cập nhật PROJECT.md
+
+Thêm/cập nhật:
 ```markdown
-**AGKit Version:** 2.0
+**AGKit Version:** 3.0
 **Upgraded:** [YYYY-MM-DD]
+**Durable Layer:** ✅ Installed (agkit-cli v3.0.0)
 ```
 
-### Bước 6 — Báo cáo
+### Bước 8 — Báo cáo
 
 ```
-✅ AGKit Upgrade hoàn thành!
+✅ AGKit Upgrade v3.0 hoàn thành!
 
-📁 Đã thêm vào .agkit/:
-   agents/database-reviewer.md
-   agents/frontend-reviewer.md
-   agents/devops-checker.md
-   agents/refactor-guide.md
-   rules/testing.md
-   rules/tailwind.md    ← Detect Tailwind trong project
+📁 Durable Layer:
+   .agkit/bin/agkit-cli.exe  ← CLI binary (1.7MB)
+   .agkit/agkit.db           ← Local SQLite database
+   ~/.gemini/agkit-global.db ← Global database
 
-🆕 Skills mới có thể dùng ngay (đã global):
-   agkit plan    — Breakdown feature/task
-   agkit git     — Conventional commits
-   agkit debug   — Systematic debugging
-   agkit refactor— Safe refactoring
-   agkit perf    — Performance analysis
-   agkit docs    — Generate documentation
-   agkit deploy  — Pre-deploy checklist
+🆕 6 Skills mới:
+   /history   — Xem lịch sử hoạt động
+   /matrix    — Test Matrix (Behavior-to-Proof)
+   /intake    — Phân loại rủi ro công việc
+   /trace     — Ghi hành động vào DB
+   /stats     — Thống kê sức khỏe dự án
+   /backlog   — Quản lý danh sách việc
 
-Project đã ở AGKit v2.0 🎉
+⬆️ 3 Skills nâng cấp:
+   /plan      — + Intake Classification (Risk Lanes)
+   /verify    — + Test Matrix Report + Trace
+   /session   — + Durable Layer recording
+
+🚦 Risk Lanes sẵn sàng:
+   🟢 Tiny    → Sửa trực tiếp → /verify
+   🟡 Normal  → /plan → Code → /verify → /review
+   🔴 High-risk → /plan + Mermaid → User duyệt → /security → /verify → /review
+
+Project đã ở AGKit v3.0 🎉
+Gõ "agkit stats" để xem dashboard sức khỏe dự án.
 ```
+
+---
+
+## Hành vi đặc biệt
+
+### Khi không có Rust toolchain
+Nếu máy chưa có Rust, hướng dẫn cài:
+1. Windows: `winget install Rustlang.Rustup`
+2. Cài MSVC Build Tools: `winget install Microsoft.VisualStudio.2022.BuildTools`
+3. Cài Windows SDK: `winget install Microsoft.WindowsSDK.10.0.22621`
+4. Sau đó thử lại `agkit upgrade`
+
+### Khi agkit-cli đã tồn tại
+Kiểm tra version: `.agkit/bin/agkit-cli --version`
+Nếu đã là 3.0.0 → bỏ qua bước build
