@@ -1,0 +1,26 @@
+{
+  "project_name": "Antigravity Self-Healing Workspace",
+  "version": "1.0.0",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "description": "Must have an INSTRUCTIONS.md file at root.",
+      "file_path": "INSTRUCTIONS.md",
+      "check_type": "exists"
+    },
+    {
+      "id": "REQ-2",
+      "description": "Must have .harness directory with test_runner.py and validator.py.",
+      "file_path": ".harness/test_runner.py",
+      "check_type": "exists"
+    },
+    {
+      "id": "REQ-3",
+      "description": "Must have dummy_app.py file with a returning string 'Harness Active'.",
+      "file_path": "dummy_app.py",
+      "check_type": "function_returns",
+      "function_name": "get_status",
+      "expected_value": "Harness Active"
+    }
+  ]
+}
