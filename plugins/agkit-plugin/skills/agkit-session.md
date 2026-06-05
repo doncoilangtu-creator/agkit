@@ -1,4 +1,4 @@
-# agkit-session — Nạp context đầu phiên làm việc
+# agkit-session — Nạp context đầu phiên làm việc (v3.0)
 # Skill này được gọi khi bắt đầu một phiên làm việc mới.
 # Trigger: "agkit session", "bắt đầu phiên", "load context", "nạp context dự án"
 
@@ -7,6 +7,7 @@
 Thực hiện toàn bộ Session Start Checklist từ `INSTRUCTIONS.md` một cách tự động:
 đọc bộ nhớ dự án, trạng thái hiện tại, load đúng rules theo stack, và báo cáo
 tóm tắt sẵn sàng làm việc.
+**v3.0: Tự động ghi nhận session vào Durable Layer (SQLite).**
 
 ---
 
@@ -17,6 +18,13 @@ tóm tắt sẵn sàng làm việc.
 Tìm `INSTRUCTIONS.md` hoặc thư mục `.agkit/` trong project root:
 - **Không tìm thấy**: Báo "Chưa có AGKit. Gọi `agkit init` để setup." → Dừng
 - **Tìm thấy**: Tiếp tục
+
+### Bước 1.5 — Ghi session vào Durable Layer (v3.0 MỚI)
+
+Kiểm tra `.agkit/bin/agkit-cli.exe` (hoặc `agkit-cli` trên Linux/Mac):
+- **Có**: Chạy `agkit-cli session start --summary "Session started"`
+- **Không có**: Cảnh báo nhẹ: "💡 Durable Layer chưa cài. Chạy `agkit upgrade` để bổ sung."
+  → Tiếp tục bình thường (không block)
 
 ### Bước 2 — Đọc PROJECT.md
 

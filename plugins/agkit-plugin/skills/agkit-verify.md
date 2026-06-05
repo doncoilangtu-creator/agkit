@@ -1,4 +1,4 @@
-# agkit-verify — Verification Loop thủ công
+# agkit-verify — Verification Loop thủ công (v3.0)
 # Skill này được gọi để chạy test suite và thực hiện verification loop.
 # Trigger: "agkit verify", "chạy test", "kiểm tra code có pass không", "agkit verify [stack]"
 
@@ -6,6 +6,7 @@
 
 Chạy test suite phù hợp với stack đang dùng, theo đúng protocol trong `VERIFY.md`.
 Nếu test fail, tự đọc lỗi, tìm root cause và sửa. Lặp tối đa 3 vòng trước khi escalate.
+**v3.0: Tự động xuất Test Matrix Report và ghi trace vào Durable Layer sau mỗi lần verify.**
 
 ---
 
@@ -107,3 +108,44 @@ Test fail sau 3 vòng: [mô tả lỗi] — [ngày giờ]
 ❌ Verification Loop: ESCALATED
    Đã ghi vào STATUS.md → Blocked
 ```
+
+### Bước 6 — Test Matrix Report (v3.0 MỚI)
+
+Sau khi chạy test suite, tự động:
+
+1. Đọc story hiện tại từ `STATUS.md` (nếu có story ID dạng US-XXX)
+2. Nếu có story ID, query matrix:
+   ```bash
+   agkit-cli matrix query --story <story_id>
+   ```
+3. Xuất báo cáo:
+   ```
+   📋 Test Matrix — US-001 "User Registration"
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+   | Hành vi                  | Unit | Integration | E2E  | Platform |
+   |--------------------------|------|-------------|------|----------|
+   | User đăng ký OK          |  ✅  |     ✅      |  ❌  |    —    |
+   | Email trùng → reject     |  ✅  |     ❌      |  ❌  |    —    |
+
+   Score: 3/6 (50%) — Cần thêm Integration + E2E
+   ```
+4. Nếu test vừa chạy pass, tự động cập nhật matrix:
+   ```bash
+   agkit-cli matrix set --story <story_id> --behavior "<behavior>" --unit 1
+   ```
+
+### Bước 7 — Ghi Trace vào Durable Layer (v3.0 MỚI)
+
+Ghi kết quả verify vào Durable Layer:
+
+**Nếu PASS:**
+```bash
+agkit-cli trace --summary "Verify: all tests passed (N tests)" --outcome success
+```
+
+**Nếu FAIL → Escalated:**
+```bash
+agkit-cli trace --summary "Verify: tests failed after 3 attempts" --outcome failure
+```
+

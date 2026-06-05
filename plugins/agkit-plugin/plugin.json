@@ -1,9 +1,9 @@
 {
   "name": "agkit-plugin",
-  "version": "1.0.0",
-  "description": "AGKit — Bộ kit tối ưu hóa Antigravity cho solo developer. Tự động hóa setup dự án, code review, security scan và verification loop.",
+  "version": "3.0.0",
+  "description": "AGKit v3.0 — Antigravity Developer Kit với Durable Layer (SQLite), Risk Lanes, Test Matrix, và 23 skills tự động hóa toàn diện.",
   "author": {
-    "name": "AGKit"
+    "name": "AGKit by Hoanghitech"
   },
   "license": "MIT"
 }

@@ -4,3 +4,12 @@ __pycache__/
 *.log
 .git/
 *.lnk
+
+# AGKit Durable Layer (v3.0)
+.agkit/agkit.db
+.agkit/agkit.db-wal
+.agkit/agkit.db-shm
+.agkit/bin/
+
+# Rust build artifacts
+agkit-cli/target/

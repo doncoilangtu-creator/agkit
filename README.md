@@ -1,58 +1,127 @@
-# AGKit v2.0 — Antigravity Developer Kit
+# AGKit v3.0 — Antigravity Developer Kit
 
-**AGKit v2.0** là một bộ công cụ phát triển và hỗ trợ lập trình cặp (pair programming) tùy chỉnh tối ưu cho **Antigravity AI Assistant**. Bộ công cụ này giúp tự động hóa quy trình làm việc, thiết lập các tiêu chuẩn code, tự sửa lỗi kiểm thử (self-healing tests), và hỗ trợ đánh giá bảo mật cũng như kiến trúc hệ thống.
+**AGKit v3.0** là bộ công cụ phát triển toàn diện tối ưu cho **Antigravity AI Assistant**. Bộ Kit giúp biến mọi repository thành một workspace thông minh cho AI Coding Agent — với khả năng tự động phân loại rủi ro, theo dõi lịch sử hoạt động, và đối chiếu kiểm chứng hành vi.
+
+> *Coding agents không chỉ cần những prompt tốt hơn. Chúng cần những repository được thiết kế tốt hơn.*
+
+---
+
+## ✨ Tính năng mới trong v3.0
+
+### 🗄 Durable State Layer
+- Cơ sở dữ liệu SQLite (`agkit.db`) lưu trữ có cấu trúc: sessions, traces, ADRs, stories, test matrix, backlog
+- CLI binary (`agkit-cli`) bằng Rust để đọc/ghi dữ liệu
+- Hai database: per-project (`.agkit/agkit.db`) + global (`~/.gemini/agkit-global.db`)
+
+### 🚦 Risk Lanes (Phân luồng rủi ro)
+- Mọi request được phân loại tự động: 🟢 Tiny / 🟡 Normal / 🔴 High-risk
+- Mỗi lane có quy trình bắt buộc riêng để đảm bảo an toàn
+
+### 🧪 Test Matrix (Ma trận kiểm chứng)
+- Đối chiếu hành vi yêu cầu với bằng chứng kiểm chứng (Unit, Integration, E2E, Platform)
+- Chấm điểm coverage score tự động
 
 ---
 
 ## 📂 Cấu trúc dự án
 
-Dự án được tổ chức như sau:
+```
+.agkit/
+├── PROJECT.md          ← Bộ nhớ bền vững của dự án
+├── STATUS.md           ← Trạng thái công việc hiện tại
+├── VERIFY.md           ← Verification Loop Protocol
+├── agkit.db            ← SQLite database (gitignored)
+├── bin/agkit-cli.exe   ← Rust CLI binary (gitignored)
+├── rules/              ← 8 bộ quy tắc (common, nextjs, golang, python, supabase, tailwind, docker, testing)
+└── agents/             ← 8 agent chuyên biệt (architect, code-reviewer, security-scanner, ...)
 
-*   **`.agkit/`**: Chứa các cấu hình lõi của AGKit:
-    *   `PROJECT.md`, `STATUS.md`, `VERIFY.md`: Theo dõi trạng thái và quy trình xác minh dự án.
-    *   `rules/`: Các tiêu chuẩn lập trình cho các công nghệ phổ biến (Next.js, Golang, Python, Supabase, Tailwind, Docker, Testing).
-    *   `agents/`: Các vai trò Agent chuyên biệt (Architect, Code Reviewer, Security Scanner, DevOps, v.v.).
-*   **`.harness/`**: Bộ khung kiểm thử tự sửa lỗi (Self-Healing Test Harness).
-*   **`plugins/agkit-plugin/`**: Plugin cài đặt cho Antigravity (chứa 17 skills hỗ trợ tự động hóa như khởi tạo dự án, lập kế hoạch, refactor, kiểm tra bảo mật, deploy...).
-*   **`guide/`**: Giao diện hướng dẫn HTML tương tác trực quan đẹp mắt để tra cứu nhanh các lệnh và copy-paste.
-*   **`INSTRUCTIONS.md`**: Tài liệu hướng dẫn tích hợp và quy định chung của dự án.
+.harness/               ← Self-Healing Test Harness
+plugins/agkit-plugin/   ← 23 skills tự động hóa
+guide/                  ← HTML Guide tương tác
+agkit-cli/              ← Rust source code
+```
 
 ---
 
-## 🛠️ Hướng dẫn cài đặt & sử dụng
+## 🚀 23 Skills Hỗ trợ
 
-### 1. Cài đặt Cấu hình Dự án (.agkit)
-Để áp dụng bộ kit này cho một dự án mới, hãy sao chép thư mục `.agkit/` và file `INSTRUCTIONS.md` vào thư mục gốc của dự án đó:
+### Core (Cốt lõi)
+| Lệnh | Mô tả |
+|---|---|
+| `/init` | Khởi tạo AGKit cho dự án mới |
+| `/session` | Bắt đầu phiên làm việc, nạp context |
+| `/status` | Kiểm tra trạng thái dự án |
+| `/done` | Kết thúc task và cập nhật trạng thái |
+| `/help` | Xem danh sách tất cả lệnh |
+| `/upgrade` | Nâng cấp AGKit lên phiên bản mới |
+
+### Planning & Risk (Lập kế hoạch & Rủi ro)
+| Lệnh | Mô tả |
+|---|---|
+| `/plan` | Lên kế hoạch với Intake Classification (v3.0) |
+| `/intake` | 🆕 Phân loại rủi ro công việc độc lập |
+| `/adr` | Ghi Architecture Decision Record |
+
+### Quality & Security (Chất lượng & Bảo mật)
+| Lệnh | Mô tả |
+|---|---|
+| `/verify` | Chạy test + Test Matrix Report (v3.0) |
+| `/review` | Code review tự động |
+| `/security` | Quét lỗi bảo mật |
+| `/matrix` | 🆕 Xem/quản lý Test Matrix |
+
+### Development (Phát triển)
+| Lệnh | Mô tả |
+|---|---|
+| `/refactor` | Đề xuất cải tiến cấu trúc code |
+| `/debug` | Phân tích và sửa lỗi |
+| `/perf` | Kiểm tra hiệu suất |
+| `/docs` | Tạo tài liệu tự động |
+| `/deploy` | Kiểm tra các bước triển khai |
+| `/git` | Quản lý Git workflow |
+
+### Durable Layer (Lớp dữ liệu bền vững) — 🆕 v3.0
+| Lệnh | Mô tả |
+|---|---|
+| `/history` | 🆕 Xem lịch sử hoạt động từ DB |
+| `/trace` | 🆕 Ghi hành động quan trọng vào DB |
+| `/stats` | 🆕 Thống kê nhanh sức khỏe dự án |
+| `/backlog` | 🆕 Quản lý danh sách việc cần làm |
+
+---
+
+## 🛠️ Hướng dẫn cài đặt
+
+### 1. Clone repository
 ```bash
-cp -r .agkit /path/to/your/new-project/
-cp INSTRUCTIONS.md /path/to/your/new-project/
+git clone https://github.com/doncoilangtu-creator/agkit.git
 ```
 
-### 2. Cài đặt Plugin cho Antigravity
-Để tích hợp 17 phím tắt/skills mới vào Antigravity, hãy sao chép thư mục plugin vào thư mục cấu hình của hệ thống:
+### 2. Copy cấu hình vào dự án
+```bash
+cp -r .agkit /path/to/your/project/
+cp INSTRUCTIONS.md /path/to/your/project/
+```
+
+### 3. Cài plugin cho Antigravity
 ```powershell
-# Trên Windows
+# Windows
 xcopy /E /I plugins\agkit-plugin "$env:USERPROFILE\.gemini\config\plugins\agkit-plugin"
 ```
 
-### 3. Tra cứu nhanh bằng HTML Guide
-Mở file `guide/index.html` trong trình duyệt của bạn hoặc click vào shortcut ngoài Desktop để xem danh sách phím tắt và nhấp để copy nhanh lệnh cần dùng.
+### 4. Build CLI (cần Rust toolchain + MSVC)
+```bash
+cd agkit-cli
+cargo build --release
+mkdir -p ../.agkit/bin
+cp target/release/agkit-cli.exe ../.agkit/bin/
+```
+
+### 5. Khởi tạo Durable Layer
+```bash
+.agkit/bin/agkit-cli init
+```
 
 ---
 
-## 🚀 Các Skills Hỗ trợ trong Plugin
-
-Dưới đây là một số phím tắt/skills tiêu biểu trong tổng số 17 skills:
-1.  **`/init`**: Khởi tạo cấu hình AGKit cho dự án mới.
-2.  **`/session`**: Bắt đầu phiên làm việc mới, ghi nhận ngữ cảnh.
-3.  **`/status`**: Kiểm tra trạng thái hiện tại của dự án.
-4.  **`/verify`**: Chạy bộ tự sửa lỗi (self-healing verification).
-5.  **`/review`**: Đánh giá chất lượng mã nguồn.
-6.  **`/security`**: Quét lỗi bảo mật.
-7.  **`/plan`**: Lập kế hoạch triển khai kiến trúc.
-8.  **`/refactor`**: Đề xuất cải tiến và tối ưu cấu trúc code.
-9.  **`/deploy`**: Kiểm tra các bước triển khai DevOps.
-... và nhiều lệnh hữu ích khác chi tiết trong hướng dẫn HTML.
-
----
-*Phát triển bởi đội ngũ Hoanghitech & Antigravity Assistant.*
+*Phát triển bởi Hoanghitech & Antigravity Assistant. Lấy cảm hứng từ [Harness Engineering](https://openai.com/index/harness-engineering/).*

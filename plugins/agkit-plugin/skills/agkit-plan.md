@@ -1,14 +1,60 @@
-# agkit-plan — Lên kế hoạch và breakdown task lớn
+# agkit-plan — Lên kế hoạch và breakdown task lớn (v3.0)
 # Trigger: "agkit plan", "lên kế hoạch", "breakdown task", "agkit plan [mô tả feature]"
 
 ## Mô tả
 
-Nhận mô tả feature/task lớn, phân tích và tạo kế hoạch chi tiết với subtasks có priority,
+Nhận mô tả feature/task lớn, **phân loại rủi ro (Intake Classification)**,
+phân tích và tạo kế hoạch chi tiết với subtasks có priority,
 ước tính thời gian, xác định dependencies, và cập nhật STATUS.md ngay.
 
 ---
 
 ## Các bước thực hiện
+
+### Bước 0 — Intake Classification (Risk Lane Assignment)
+
+> ⚡ Bước này BẮT BUỘC trước khi breakdown task.
+
+**0.1 — Xác định Input Type:**
+
+| Input Type | Keyword/Signal |
+|---|---|
+| `new_spec` | "tạo mới", "dự án mới", "setup", "scaffold" |
+| `change_request` | "thêm", "sửa", "thay đổi", "modify" |
+| `bug_fix` | "bug", "lỗi", "fix", "broken", "sai" |
+| `refactor` | "refactor", "tái cấu trúc", "optimize", "clean up" |
+| `maintenance` | "update", "upgrade", "dependency", "config" |
+| `harness_improvement` | "agkit", "harness", "rule", "agent", "skill" |
+
+**0.2 — Chạy Risk Checklist (tự động):**
+
+| Tiêu chí | Điểm |
+|---|---|
+| DB schema thay đổi? | +2 |
+| Auth/Payment liên quan? | +3 |
+| Public API thay đổi? | +2 |
+| Estimate > 3 ngày? | +1 |
+| Ảnh hưởng > 5 files? | +1 |
+| Breaking change? | +2 |
+| Chạm vào Off-limits (từ PROJECT.md)? | +3 |
+
+**0.3 — Xác định Lane:**
+
+| Tổng điểm | Lane | Quy trình bắt buộc |
+|---|---|---|
+| 0-1 | 🟢 `tiny` | Sửa trực tiếp → `/verify` → Done (SKIP plan) |
+| 2-4 | 🟡 `normal` | `/plan` → Code → Unit test → `/verify` → `/review` |
+| 5+ | 🔴 `high_risk` | `/plan` chi tiết + Mermaid → User duyệt → `/security` → `/verify` → `/review` |
+
+**0.4 — Ghi vào Durable Layer:**
+```bash
+agkit-cli intake --type <type> --lane <lane> --summary "<mô tả>"
+```
+
+**0.5 — Xử lý theo Lane:**
+- **Tiny** → Báo user: "🟢 Task nhỏ — sửa trực tiếp, chạy `/verify` khi xong." → DỪNG (không cần plan)
+- **Normal** → Tiếp tục Bước 1 bình thường
+- **High-risk** → Cảnh báo: "🔴 Task rủi ro cao — cần plan chi tiết với Mermaid diagram. Bạn xác nhận tiếp tục?" → Chờ user confirm
 
 ### Bước 1 — Thu thập thông tin
 
